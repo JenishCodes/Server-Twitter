@@ -245,7 +245,7 @@ router.post("/signin", async function (req, res) {
 
 router.post("/", async function (req, res) {
   try {
-    const isAccountNameValid = await isAccountNameValid(req.body.account_name);
+    const isAccountNameValid = await isAccountNameAvailable(req.body.account_name);
 
     if (!isAccountNameValid) {
       throw new Error("Account name already taken");
