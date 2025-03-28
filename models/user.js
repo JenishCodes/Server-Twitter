@@ -8,6 +8,9 @@ const { Notification } = require("./notification");
 
 const { ObjectId } = mongoose.SchemaTypes;
 
+const DEFAULT_PROFILE_IMAGE =
+  "https://firebasestorage.googleapis.com/v0/b/twitter-webapp-clone.appspot.com/o/profile_images%2Fdefault_profile_image.jpg?alt=media&token=c3e0b3d1-3739-4edd-99b3-b6863946f570";
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -59,8 +62,7 @@ const userSchema = new mongoose.Schema(
     },
     profile_image_url: {
       type: String,
-      default:
-        "https://firebasestorage.googleapis.com/v0/b/twitter-webapp-clone.appspot.com/o/profile_images%2Fdefault_profile_image.jpg?alt=media&token=c3e0b3d1-3739-4edd-99b3-b6863946f570",
+      default: DEFAULT_PROFILE_IMAGE,
     },
     banner_image_url: {
       type: String,

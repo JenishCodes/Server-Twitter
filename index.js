@@ -16,15 +16,19 @@ require("dotenv").config();
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.ALLOWED_ORIGINS.split(" "),
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/twitter-clone")
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/twitter")
   .then(() => console.log("Connected to MongoDb..."))
   .catch((err) => console.log(err));
+
+app.get("/", (_, res) => {
+  res.send("Welcome to Twitter API");
+});
 
 app.use("/user", users);
 app.use("/tweet", tweets);
