@@ -14,12 +14,7 @@ const app = express();
 require("dotenv").config();
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.ALLOWED_ORIGINS.split(" "),
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
+app.use(cors());
 
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/twitter")
