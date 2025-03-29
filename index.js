@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/twitter")
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDb..."))
   .catch((err) => console.log(err));
 
@@ -34,8 +34,8 @@ app.use("/message", messages);
 app.use("/conversation", conversations);
 app.use("/notification", notifications);
 
-const server = app.listen(process.env.PORT || 3000, () =>
-  console.log("Server running on port 3000...")
+const server = app.listen(process.env.PORT, () =>
+  console.log(`Server running on port ${process.env.PORT}...`)
 );
 
 const io = socket(server, {

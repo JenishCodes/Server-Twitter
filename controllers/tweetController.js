@@ -115,12 +115,20 @@ exports.getTweetReplies = async function (tweet_id, user_id, page) {
     userReplies = await Tweet.find({
       author: ObjectId(user_id),
       $expr: {
-        $eq: [{ $arrayElemAt: ["$referenced_tweet.type", -1] }, "replied_to"],
-      },
-      $expr: {
-        $eq: [
-          { $arrayElemAt: ["$referenced_tweet.id", -1] },
-          ObjectId(tweet_id),
+        $and: [
+          {
+            $eq: [
+              { $arrayElemAt: ["$referenced_tweet.type", -1] },
+              "replied_to",
+            ],
+          },
+
+          {
+            $eq: [
+              { $arrayElemAt: ["$referenced_tweet.id", -1] },
+              ObjectId(tweet_id),
+            ],
+          },
         ],
       },
     })
@@ -131,10 +139,17 @@ exports.getTweetReplies = async function (tweet_id, user_id, page) {
   const replies = await Tweet.find({
     author: { $ne: user_id ? ObjectId(user_id) : null },
     $expr: {
-      $eq: [{ $arrayElemAt: ["$referenced_tweet.type", -1] }, "replied_to"],
-    },
-    $expr: {
-      $eq: [{ $arrayElemAt: ["$referenced_tweet.id", -1] }, ObjectId(tweet_id)],
+      $and: [
+        {
+          $eq: [{ $arrayElemAt: ["$referenced_tweet.type", -1] }, "replied_to"],
+        },
+        {
+          $eq: [
+            { $arrayElemAt: ["$referenced_tweet.id", -1] },
+            ObjectId(tweet_id),
+          ],
+        },
+      ],
     },
   })
     .sort({ createdAt: -1 })
@@ -151,7 +166,7 @@ exports.getTweetReferences = async function (tweet_id) {
     .transform(function (doc) {
       const { referenced_tweet } = doc._doc;
       const newRefTweets = referenced_tweet.map((ref) => {
-        return { type: ref.type, ...ref.id ? ref.id._doc : null };
+        return { type: ref.type, ...(ref.id ? ref.id._doc : null) };
       });
       return newRefTweets;
     });
@@ -194,7 +209,7 @@ exports.getTweets = async function (condition, page, fields) {
       return docs.map((doc) => {
         const { referenced_tweet, ...restDoc } = doc._doc;
         const newRefTweets = referenced_tweet.map((ref) => {
-          return { type: ref.type, ...ref.id ? ref.id._doc : null };
+          return { type: ref.type, ...(ref.id ? ref.id._doc : null) };
         });
         return {
           ...restDoc,

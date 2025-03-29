@@ -343,10 +343,10 @@ exports.getUserFeed = async function (user_id, page) {
           author === user_id
             ? ""
             : accountNames[
-            following_ids.findIndex(
-              (id) => id.toString() === author.toString()
-            )
-            ] + " Retweeted",
+                following_ids.findIndex(
+                  (id) => id.toString() === author.toString()
+                )
+              ] + " Retweeted",
       };
     });
   });
@@ -386,10 +386,10 @@ exports.getUserFeed = async function (user_id, page) {
           author === user_id
             ? ""
             : accountNames[
-            following_ids.findIndex(
-              (id) => id.toString() === author.toString()
-            )
-            ] + " Liked",
+                following_ids.findIndex(
+                  (id) => id.toString() === author.toString()
+                )
+              ] + " Liked",
       };
     });
   });
@@ -484,9 +484,10 @@ exports.getUserFeed = async function (user_id, page) {
     var tweet = final_tweets.find(
       (t) => t._id.toString() === obj._id.toString()
     );
-    var ref_tweet;
+
+    var ref_tweet = [];
     if (obj.ref_tweet_ids) {
-      obj.ref_tweet_ids.map((id) =>
+      ref_tweet = obj.ref_tweet_ids.map((id) =>
         ref_tweets.find((t) => t._id.toString() === id.toString())
       );
     }
